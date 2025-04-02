@@ -7,6 +7,9 @@
         <x-nav-link href="/admin/show" :active="request()->is('/admin/show')">Admin_show</x-nav-link>
     </x-slot:nav>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <form method="POST" action="/appointments/{{ $appointment->id }}">
         @csrf
@@ -65,7 +68,7 @@
                     <div class="sm:col-span-2">
                         <label for="appointment_date" class="block text-sm/6 font-medium text-gray-900">Update appointment date</label>
                         <div class="mt-2 grid grid-cols-1">
-                            <input type="date" name="appointment_date" id="appointment_date" value="{{ $appointment->appointment_date }}" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" placeholder="XX-XX-XXXX" required>
+                            <input type="date" name="appointment_date" id="appointment_date" value={{ $appointment->appointment_date }} class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" required>
                         </div>
                         @error('appointment_date')
                             <p class="text-xs text-red-500 font-semibold mt-1">{{ $message }}</p>
@@ -74,12 +77,8 @@
                     <div class="sm:col-span-2">
                         <label for="mechanic" class="block text-sm/6 font-medium text-gray-900">Update mechanic</label>
                         <div class="mt-2 grid grid-cols-1">
-                            <select id="mechanic" name="mechanic" value="{{ $appointment->mechanic }}" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                <option>John Doe</option>
-                                <option>Jane Smith</option>
-                                <option>Mike Brown</option>
-                                <option>Emily Davis</option>
-                                <option>Chris Wilson</option>
+                            <select id="mechanic" name="mechanic" id="mechanic" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                <option>{{ $appointment->mechanic }}</option>
                             </select>
                             <svg class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
                                 <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
@@ -87,15 +86,45 @@
                         </div>
                     </div>
                     <div class="sm:col-span-2">
-                        <label for="mechanic_availability" class="block text-sm/6 font-medium text-gray-900">Mechanic Availability on the selected date</label>
-                        <div class="mt-2 grid grid-cols-1">
-                            <li>John Doe [{{ 4-$count_M1 }} slot(s) left]</li>
-                            <li>Jane Smith [{{ 4-$count_M2 }} slot(s) left]</li>
-                            <li>Mike Brown [{{ 4-$count_M3 }} slot(s) left]</li>
-                            <li>Emily Davis [{{ 4-$count_M4 }} slot(s) left]</li>
-                            <li>Chris Wilson [{{ 4-$count_M5 }} slot(s) left]</li>
+                        <label for="mechanic_availability" class="block text-sm/6 font-medium text-gray-900">
+                            Mechanic Availability on: <span id="dateDisplay">{{ $appointment->appointment_date }}</span>
+                        </label>
+
+                        <div class="mt-2 grid grid-cols-1" id="mechanicAvailabilityList">
+                            <!-- This will be populated by JavaScript -->
+                            <li>John Doe [-- slot(s) left]</li>
+                            <li>Jane Smith [-- slot(s) left]</li>
+                            <li>Mike Brown [-- slot(s) left]</li>
+                            <li>Emily Davis [-- slot(s) left]</li>
+                            <li>Chris Wilson [-- slot(s) left]</li>
                         </div>
                     </div>
+
+                    <script>
+                        $('#appointment_date').change(function() {
+                            const selectedDate = $(this).val();
+                            $('#dateDisplay').text(selectedDate);
+
+                            $('#mechanicAvailabilityList').html('<li>Loading availability...</li>');
+
+                            $.get('/mechanic-availability', { selected_date: selectedDate })
+                                .done(function(data) {
+                                    let html_available = '';
+                                    let html_mechanics = '';
+                                    $.each(data.availability, function(mechanic, slots) {
+                                        html_available += `<li>${mechanic} [${slots} slot(s) left]</li>`;
+                                        if (slots > 0) {
+                                            html_mechanics += `<option>${mechanic}</option>`;
+                                        }
+                                    });
+                                    $('#mechanicAvailabilityList').html(html_available);
+                                    $('#mechanic').html(html_mechanics);
+                                })
+                                .fail(function() {
+                                    $('#mechanicAvailabilityList').html('<li>Error loading availability</li>');
+                                });
+                        });
+                    </script>
                 </div>
             </div>
         </div>

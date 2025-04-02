@@ -28,11 +28,13 @@ class AppointmentController extends Controller
             return redirect('/login');
         }
 
-        $count_M1 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='John Doe'")->count;
-        $count_M2 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Jane Smith'")->count;
-        $count_M3 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Mike Brown'")->count;
-        $count_M4 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Emily Davis'")->count;
-        $count_M5 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Chris Wilson'")->count;
+        $date = $appointment->appointment_date;
+
+        $count_M1 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='John Doe' AND appointment_date=$date")->count;
+        $count_M2 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Jane Smith' AND appointment_date=$date")->count;
+        $count_M3 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Mike Brown' AND appointment_date=$date")->count;
+        $count_M4 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Emily Davis' AND appointment_date=$date")->count;
+        $count_M5 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Chris Wilson' AND appointment_date=$date")->count;
 
         return view('admin.edit', compact(['count_M1', 'count_M2', 'count_M3', 'count_M4', 'count_M5']), ['appointment' => $appointment]);
     }
@@ -42,7 +44,6 @@ class AppointmentController extends Controller
         if (Auth::guest()) {
             return redirect('/login');
         }
-        // authorize (on hold...)
 
         request()->validate([
             'appointment_date' => 'required|date|after:tomorrow',
@@ -62,7 +63,6 @@ class AppointmentController extends Controller
         if (Auth::guest()) {
             return redirect('/login');
         }
-        // authorize (on hold...)
 
         $appointment->delete();
         return redirect('/admin');
@@ -78,17 +78,6 @@ class AppointmentController extends Controller
     public function user_create()
     {
         return view('user.create');
-        // $selectedDate = request()->datePicker;
-        // $data = [$selectedDate];
-        // return response()->json($data);
-
-        // $count_M1 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='John Doe'")->count;
-        // $count_M2 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Jane Smith'")->count;
-        // $count_M3 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Mike Brown'")->count;
-        // $count_M4 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Emily Davis'")->count;
-        // $count_M5 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Chris Wilson'")->count;
-
-        // return view('user.create', compact(['count_M1', 'count_M2', 'count_M3', 'count_M4', 'count_M5']));
     }
 
     public function user_index()
@@ -128,9 +117,9 @@ class AppointmentController extends Controller
 
         return redirect('/index');
     }
-    public function getMechanicAvailability(Request $request)
+    public function getMechanicAvailability()
     {
-        $validated = $request->validate([
+        $validated = request()->validate([
             'selected_date' => 'required|date'
         ]);
 
@@ -152,7 +141,7 @@ class AppointmentController extends Controller
                 ->whereDate('appointment_date', $date)
                 ->count();
 
-            $availability[$mechanic] = 4 - $count; // Assuming 4 is max slots per day
+            $availability[$mechanic] = 4 - $count;
         }
 
         return response()->json([
