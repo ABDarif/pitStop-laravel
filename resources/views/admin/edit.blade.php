@@ -77,8 +77,7 @@
                     <div class="sm:col-span-2">
                         <label for="mechanic" class="block text-sm/6 font-medium text-gray-900">Update mechanic</label>
                         <div class="mt-2 grid grid-cols-1">
-                            <select id="mechanic" name="mechanic" id="mechanic" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                <option>{{ $appointment->mechanic }}</option>
+                            <select id="mechanic" name="mechanic" id="mechanic" value={{ $appointment->mechanic }} class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                             </select>
                             <svg class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
                                 <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
@@ -100,6 +99,33 @@
                         </div>
                     </div>
 
+                    <!-- Script for generating mechanic availability list on first load -->
+                    <script>
+                            const selectedDate = $(appointment_date).val();
+                            $('#dateDisplay').text(selectedDate);
+
+                            $('#mechanicAvailabilityList').html('<li>Loading availability...</li>');
+
+                            $.get('/mechanic-availability', { selected_date: selectedDate })
+                                .done(function(data) {
+                                    let html_available = '';
+                                    let html_mechanics = '';
+                                    html_mechanics += `<option>{{ $appointment->mechanic }} (selected)</option>`;
+                                    $.each(data.availability, function(mechanic, slots) {
+                                        html_available += `<li>${mechanic} [${slots} slot(s) left]</li>`;
+                                        if (slots > 0 && mechanic != "{{ $appointment->mechanic }}") {
+                                            html_mechanics += `<option>${mechanic}</option>`;
+                                        }
+                                    });
+                                    $('#mechanicAvailabilityList').html(html_available);
+                                    $('#mechanic').html(html_mechanics);
+                                })
+                                .fail(function() {
+                                    $('#mechanicAvailabilityList').html('<li>Error loading availability</li>');
+                                });
+                    </script>
+
+                    <!-- Script for updating real-time mechanic availability list on changing date -->
                     <script>
                         $('#appointment_date').change(function() {
                             const selectedDate = $(this).val();
@@ -111,9 +137,10 @@
                                 .done(function(data) {
                                     let html_available = '';
                                     let html_mechanics = '';
+                                    html_mechanics += `<option>{{ $appointment->mechanic }} (selected)</option>`;
                                     $.each(data.availability, function(mechanic, slots) {
                                         html_available += `<li>${mechanic} [${slots} slot(s) left]</li>`;
-                                        if (slots > 0) {
+                                        if (slots > 0 && mechanic != "{{ $appointment->mechanic }}") {
                                             html_mechanics += `<option>${mechanic}</option>`;
                                         }
                                     });
