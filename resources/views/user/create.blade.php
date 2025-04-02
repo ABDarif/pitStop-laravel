@@ -7,6 +7,9 @@
         <x-nav-link href="/index" :active="request()->is('/index')">User_index</x-nav-link>
     </x-slot:nav>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <form method="POST" action="/appointments">
         @csrf
@@ -100,15 +103,40 @@
                         </div>
                     </div>
                     <div class="sm:col-span-2">
-                        <label for="mechanic_availability" class="block text-sm/6 font-medium text-gray-900">Mechanic Availability on the selected date</label>
-                        <div class="mt-2 grid grid-cols-1">
-                            <li>John Doe [{{ 4-$count_M1 }} slot(s) left]</li>
-                            <li>Jane Smith [{{ 4-$count_M2 }} slot(s) left]</li>
-                            <li>Mike Brown [{{ 4-$count_M3 }} slot(s) left]</li>
-                            <li>Emily Davis [{{ 4-$count_M4 }} slot(s) left]</li>
-                            <li>Chris Wilson [{{ 4-$count_M5 }} slot(s) left]</li>
+                        <label for="mechanic_availability" class="block text-sm/6 font-medium text-gray-900">
+                            Mechanic Availability on: <span id="dateDisplay">Select a date</span>
+                        </label>
+
+                        <div class="mt-2 grid grid-cols-1" id="mechanicAvailabilityList">
+                            <!-- This will be populated by JavaScript -->
+                            <li>John Doe [-- slot(s) left]</li>
+                            <li>Jane Smith [-- slot(s) left]</li>
+                            <li>Mike Brown [-- slot(s) left]</li>
+                            <li>Emily Davis [-- slot(s) left]</li>
+                            <li>Chris Wilson [-- slot(s) left]</li>
                         </div>
                     </div>
+
+                    <script>
+                        $('#appointment_date').change(function() {
+                            const selectedDate = $(this).val();
+                            $('#dateDisplay').text(selectedDate);
+
+                            $('#mechanicAvailabilityList').html('<li>Loading availability...</li>');
+
+                            $.get('/mechanic-availability', { selected_date: selectedDate })
+                                .done(function(data) {
+                                    let html = '';
+                                    $.each(data.availability, function(mechanic, slots) {
+                                        html += `<li>${mechanic} [${slots} slot(s) left]</li>`;
+                                    });
+                                    $('#mechanicAvailabilityList').html(html);
+                                })
+                                .fail(function() {
+                                    $('#mechanicAvailabilityList').html('<li>Error loading availability</li>');
+                                });
+                        });
+                    </script>
                 </div>
             </div>
         </div>
