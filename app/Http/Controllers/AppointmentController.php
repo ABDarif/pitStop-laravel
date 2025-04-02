@@ -28,15 +28,7 @@ class AppointmentController extends Controller
             return redirect('/login');
         }
 
-        $date = $appointment->appointment_date;
-
-        $count_M1 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='John Doe' AND appointment_date=$date")->count;
-        $count_M2 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Jane Smith' AND appointment_date=$date")->count;
-        $count_M3 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Mike Brown' AND appointment_date=$date")->count;
-        $count_M4 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Emily Davis' AND appointment_date=$date")->count;
-        $count_M5 = DB::selectOne("SELECT COUNT(*) as count FROM appointments WHERE mechanic='Chris Wilson' AND appointment_date=$date")->count;
-
-        return view('admin.edit', compact(['count_M1', 'count_M2', 'count_M3', 'count_M4', 'count_M5']), ['appointment' => $appointment]);
+        return view('admin.edit', ['appointment' => $appointment]);
     }
 
     public function admin_update(Appointment $appointment)

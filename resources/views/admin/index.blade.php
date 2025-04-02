@@ -16,6 +16,9 @@
                     <x-slot:phone>
                         {{ $appointment->phone }}
                     </x-slot:phone>
+                    <x-slot:email>
+                        {{ $appointment->email }}
+                    </x-slot:email>
                     <x-slot:car_license>
                         {{ $appointment->car_license }}
                     </x-slot:car_license>
