@@ -85,7 +85,7 @@ class AppointmentController extends Controller
             'email' => ['required', 'email'],
             'phone' => ['required', 'digits:11'],
             'address' => ['required'],
-            'car_license' => ['required', 'digits:6'],
+            'car_license' => ['required', 'digits:6', 'unique:appointments,car_license'],
             'car_engine' => ['required', 'digits:6'],
             'appointment_date' => 'required|date|after:tomorrow',
             'mechanic' => ['required']
