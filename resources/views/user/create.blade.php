@@ -3,8 +3,9 @@
         User Create Page
     </x-slot:heading>
     <x-slot:nav>
-        <x-nav-link href="/" :active="request()->is('/')">User_create</x-nav-link>
-        <x-nav-link href="/index" :active="request()->is('/index')">User_index</x-nav-link>
+        <x-nav-link href="/" :active="request()->is('/')">User</x-nav-link>
+        <x-nav-link href="/admin" :active="request()->is('admin')">Admin</x-nav-link>
+        <x-nav-link href="/mechanic" :active="request()->is('mechanic')">Mechanic</x-nav-link>
     </x-slot:nav>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>

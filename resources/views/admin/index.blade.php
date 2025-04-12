@@ -3,8 +3,9 @@
         Admin Index Page
     </x-slot:heading>
     <x-slot:nav>
-        <x-nav-link href="/admin" :active="request()->is('/admin')">Admin_index</x-nav-link>
-        <x-nav-link href="/admin/show" :active="request()->is('/admin/show')">Admin_show</x-nav-link>
+        <x-nav-link href="/" :active="request()->is('/')">User</x-nav-link>
+        <x-nav-link href="/admin" :active="request()->is('admin')">Admin</x-nav-link>
+        <x-nav-link href="/mechanic" :active="request()->is('mechanic')">Mechanic</x-nav-link>
     </x-slot:nav>
     @auth
         <x-table>

@@ -18,7 +18,7 @@ class AppointmentController extends Controller
         }
 
         return view('admin.index', [
-            'appointments' => Appointment::all()
+            'appointments' => DB::table('appointments')->simplePaginate(5)
         ]);
     }
 
