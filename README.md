@@ -1,3 +1,56 @@
+# pitStop: Smart Car Workshop Appointment System
+
+**pitStop** is a modern, web-based appointment system designed to streamline car repair bookings for workshops, mechanics, and customers. By allowing clients to **schedule appointments online** with their preferred mechanics, PitStop eliminates chaotic walk-ins and optimizes workshop efficiency.
+
+## Functionality
+
+1. Client Dashboard
+    [x] Appointment History: Allow clients to view their past and upcoming appointments.
+    [x] Edit/Cancel Appointments: Let clients edit or cancel their appointments (with appropriate restrictions).
+
+2. User Authentication & Authorization
+    [x] Client Login/Registration: Allow clients to create accounts and log in to view their appointments or make new ones.
+    [x] Admin Login: Secure the admin panel with a login system to prevent unauthorized access.
+    [x] Password Hashing: Use PHP's password_hash() and password_verify() functions to securely store and validate passwords.
+
+3. Advanced Validation
+    [x] Duplicate Appointment Check: Prevent clients from booking multiple appointments on the same day.
+    [ ] Input Masking: Use libraries like Inputmask.js to format phone numbers and dates.
+    [ ] CAPTCHA: Add a CAPTCHA to prevent spam submissions.
+
+## Video Walkthrough
+
+Here's a walkthrough of implemented features:
+
+<img src='https://s6.ezgif.com/tmp/ezgif-6-9da0df2ae0.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+GIF created with [ezgif](https://ezgif.com/maker).
+
+## Notes
+
+* [x] One of the most crucial challenges were to save all the data before screen rotation so that it keeps intact even after the rotation, Here came to play the "savedInstanceState" for retrieving all the data & "onSaveInstanceState" to restore all the data. One thing to note here, every time the screen gets rotated, "onCreate" method gets called from the very beginning each time
+* [x] savedInstanceState & onSaveInstanceState: https://developer.android.com/guide/fragments/saving-state
+
+## License
+
+    Copyright [2025] [Abdullah Arif]
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+        http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -64,55 +117,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
-
-
-
-
-
-
-# VangtiChai
-
-## *Abdullah Arif*
-
-**VangtiChai** is an app that takes an amount of money as input & shows how many notes are needed to meet that specified amount.
-
-Time spent: **10** hours
-
-## Functionality
-
-The following **required** functionality is completed:
-
-* [x] Manual keypad is placed.
-* [x] Real-time calculation of the number of notes.
-* [x] Works in both portrait & landscape orientation with no data being lost.
-
-## Video Walkthrough
-
-Here's a walkthrough of implemented features:
-
-<img src='https://s6.ezgif.com/tmp/ezgif-6-9da0df2ae0.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [ezgif](https://ezgif.com/maker).
-
-## Notes
-
-* [x] One of the most crucial challenges were to save all the data before screen rotation so that it keeps intact even after the rotation, Here came to play the "savedInstanceState" for retrieving all the data & "onSaveInstanceState" to restore all the data. One thing to note here, every time the screen gets rotated, "onCreate" method gets called from the very beginning each time
-* [x] savedInstanceState & onSaveInstanceState: https://developer.android.com/guide/fragments/saving-state
-
-## License
-
-    Copyright [2024] [Abdullah Arif]
-    
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-    
-        http://www.apache.org/licenses/LICENSE-2.0
-    
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
