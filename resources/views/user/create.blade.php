@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:heading>
-        User Create Page
+        Book an appointment!
     </x-slot:heading>
     <x-slot:nav>
         <x-nav-link href="/" :active="request()->is('/')">User</x-nav-link>

@@ -28,6 +28,6 @@ class RegisteredUserController extends Controller
         // log in
         Auth::login($user);
         // redirect
-        return redirect('/admin');
+        return redirect('/index');
     }
 }

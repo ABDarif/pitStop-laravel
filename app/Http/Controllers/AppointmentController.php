@@ -13,68 +13,81 @@ class AppointmentController extends Controller
 {
     public function admin_index()
     {
-        if (Auth::guest()) {
-            return redirect('/login');
+        if (Auth::check() && Auth::user()->type=='admin') {
+            return view('admin.index', [
+                'appointments' => DB::table('appointments')->simplePaginate(5)
+            ]);
         }
-
-        return view('admin.index', [
-            'appointments' => DB::table('appointments')->simplePaginate(5)
-        ]);
+        return redirect('/login');
     }
 
     public function admin_edit(Appointment $appointment)
     {
-        if (Auth::guest()) {
-            return redirect('/login');
+        if (Auth::check() && Auth::user()->type=='admin') {
+            return view('admin.edit', ['appointment' => $appointment]);
         }
-
-        return view('admin.edit', ['appointment' => $appointment]);
+        return redirect('/login');
     }
 
     public function admin_update(Appointment $appointment)
     {
-        if (Auth::guest()) {
-            return redirect('/login');
+        if (Auth::check() && Auth::user()->type=='admin') {
+            request()->validate([
+                'appointment_date' => 'required|date|after:tomorrow',
+                'mechanic' => ['required']
+            ]);
+
+            $appointment->update([
+                'appointment_date'=>request('appointment_date'),
+                'mechanic'=>request('mechanic')
+            ]);
+
+            return redirect('/admin');
         }
-
-        request()->validate([
-            'appointment_date' => 'required|date|after:tomorrow',
-            'mechanic' => ['required']
-        ]);
-
-        $appointment->update([
-            'appointment_date'=>request('appointment_date'),
-            'mechanic'=>request('mechanic')
-        ]);
-
-    return redirect('/admin');
+        return redirect('/login');
     }
 
     public function admin_delete(Appointment $appointment)
     {
-        if (Auth::guest()) {
-            return redirect('/login');
+        if (Auth::check() && Auth::user()->type=='admin') {
+            $appointment->delete();
+            return redirect('/admin');
         }
-
-        $appointment->delete();
-        return redirect('/admin');
+        return redirect('/login');
     }
 
     public function mechanic_index()
     {
-        return view('mechanic.index', [
-            'appointments' => Appointment::all()
-        ]);
+        if (Auth::check() && Auth::user()->type=='mechanic') {
+            // Retrieve the currently authenticated user...
+            $user = Auth::user();
+
+            return view('mechanic.index', [
+                'appointments' => Appointment::all(), 'user' => $user
+            ]);
+        }
+        return redirect('/login');
     }
 
     public function user_create()
     {
-        return view('user.create');
+        if (Auth::check() && Auth::user()->type=='client') {
+            return view('user.create');
+        }
+        return redirect('/login');
     }
 
     public function user_index()
     {
-        return view('user.index');
+        if (Auth::check() && Auth::user()->type=='client') {
+            // Retrieve the currently authenticated user...
+            $user = Auth::user();
+
+            return view('user.index', [
+                'appointments' => Appointment::all(), 'user' => $user
+            ]);
+        }
+        return redirect('/login');
     }
 
     public function user_store()
@@ -109,6 +122,41 @@ class AppointmentController extends Controller
 
         return redirect('/index');
     }
+    public function user_edit(Appointment $appointment)
+    {
+        if (Auth::check() && Auth::user()->type=='client') {
+            return view('user.edit', ['appointment' => $appointment]);
+        }
+        return redirect('/login');
+    }
+
+    public function user_update(Appointment $appointment)
+    {
+        if (Auth::check() && Auth::user()->type=='client') {
+            request()->validate([
+                'appointment_date' => 'required|date|after:tomorrow',
+                'mechanic' => ['required']
+            ]);
+
+            $appointment->update([
+                'appointment_date'=>request('appointment_date'),
+                'mechanic'=>request('mechanic')
+            ]);
+
+            return redirect('/index');
+        }
+        return redirect('/login');
+    }
+
+    public function user_delete(Appointment $appointment)
+    {
+        if (Auth::check() && Auth::user()->type=='client') {
+            $appointment->delete();
+            return redirect('/index');
+        }
+        return redirect('/login');
+    }
+
     public function getMechanicAvailability()
     {
         $validated = request()->validate([

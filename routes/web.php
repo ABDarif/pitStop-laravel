@@ -20,6 +20,9 @@ Route::get('/mechanic', [AppointmentController::class, 'mechanic_index']);
 Route::get('/', [AppointmentController::class, 'user_create']);
 Route::get('/index', [AppointmentController::class, 'user_index']);
 Route::post('/appointments', [AppointmentController::class, 'user_store']);
+Route::get('/user/{appointment}/edit', [AppointmentController::class, 'user_edit']);
+Route::patch('/appointments/{appointment}', [AppointmentController::class, 'user_update']);
+Route::delete('/appointments/{appointment}', [AppointmentController::class, 'user_delete']);
 
 //Auth
 Route::get('/register', [RegisteredUserController::class, 'create']);

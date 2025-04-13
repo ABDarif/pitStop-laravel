@@ -27,8 +27,22 @@ class SessionController extends Controller
         };
 
         request()->session()->regenerate();
+
         // redirect
-        return redirect('/admin');
+        $admin = ["abdarifnitul@gmail.com"];
+        $mechanics = ["johndoe@gmail.com", "emilydavis@gmail.com", "mikebrown@gmail.com"];
+
+        if (in_array($attributes['email'], $admin)) {
+            return redirect('/admin');
+        }
+
+        elseif (in_array($attributes['email'], $mechanics)) {
+            return redirect('/mechanic');
+        }
+
+        else {
+            return redirect('/index');
+        }
     }
     public function destroy()
     {
