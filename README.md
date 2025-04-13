@@ -4,23 +4,23 @@
 
 ## Functionality
 
-1. User Authentication & Authorization
-    - Client Login/Registration: Allow clients to create accounts and log in to view their appointments or make new ones.
-    - Admin Login: Secure the admin panel with a login system to prevent unauthorized access.
-    - Password Hashing: Use PHP's password_hash() and password_verify() functions to securely store and validate passwords.
+1. **User Authentication & Authorization**
+    - **Client Login/Registration**: Allow clients to create accounts and log in to view their appointments or make new ones.
+    - **Admin Login**: Secure the admin panel with a login system to prevent unauthorized access.
+    - **Password Hashing**: Use PHP's password_hash() and password_verify() functions to securely store and validate passwords.
 
-2. Client Dashboard
-    - Appointment History: Allow clients to view their past and upcoming appointments.
-    - Edit/Cancel Appointments: Let clients edit or cancel their appointments (with appropriate restrictions).
+2. **Client Dashboard**
+    - **Appointment History**: Allow clients to view their past and upcoming appointments.
+    - **Edit/Cancel Appointments**: Let clients edit or cancel their appointments (with appropriate restrictions).
 
-3. Mechanic Dashboard
-    - Mechanic Login: Allow mechanics to log in and view their assigned appointments.
+3. **Mechanic Dashboard**
+    - **Mechanic Login**: Allow mechanics to log in and view their assigned appointments.
 
-4. Real-time Updates
-    - AJAX for Dynamic Updates: Use AJAX to update the appointment list or mechanic availability without refreshing the page.
+4. **Real-time Updates**
+    - **AJAX for Dynamic Updates**: Use AJAX to update the appointment list or mechanic availability without refreshing the page.
 
-5. Advanced Validation
-    - Duplicate Appointment Check: Prevent clients from booking multiple appointments on the same day.
+5. **Advanced Validation**
+    - **Duplicate Appointment Check**: Prevent clients from booking multiple appointments on the same day.
     
 ## Video Walkthrough
 
