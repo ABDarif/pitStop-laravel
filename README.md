@@ -5,18 +5,18 @@
 ## Functionality
 
 1. Client Dashboard
-    [x] Appointment History: Allow clients to view their past and upcoming appointments.
-    [x] Edit/Cancel Appointments: Let clients edit or cancel their appointments (with appropriate restrictions).
+    - Appointment History: Allow clients to view their past and upcoming appointments.
+    - Edit/Cancel Appointments: Let clients edit or cancel their appointments (with appropriate restrictions).
 
 2. User Authentication & Authorization
-    [x] Client Login/Registration: Allow clients to create accounts and log in to view their appointments or make new ones.
-    [x] Admin Login: Secure the admin panel with a login system to prevent unauthorized access.
-    [x] Password Hashing: Use PHP's password_hash() and password_verify() functions to securely store and validate passwords.
+    - Client Login/Registration: Allow clients to create accounts and log in to view their appointments or make new ones.
+    - Admin Login: Secure the admin panel with a login system to prevent unauthorized access.
+    - Password Hashing: Use PHP's password_hash() and password_verify() functions to securely store and validate passwords.
 
 3. Advanced Validation
-    [x] Duplicate Appointment Check: Prevent clients from booking multiple appointments on the same day.
-    [ ] Input Masking: Use libraries like Inputmask.js to format phone numbers and dates.
-    [ ] CAPTCHA: Add a CAPTCHA to prevent spam submissions.
+    - Duplicate Appointment Check: Prevent clients from booking multiple appointments on the same day.
+    <!-- [ ] Input Masking: Use libraries like Inputmask.js to format phone numbers and dates.
+    [ ] CAPTCHA: Add a CAPTCHA to prevent spam submissions. -->
 
 ## Video Walkthrough
 
